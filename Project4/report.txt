@@ -1,0 +1,219 @@
+﻿Every component of my project is working at least to my knowledge.
+
+
+User Class:
+To test the User Class I initialized the users with the correct input and made sure that all of the assessor functions behave as I expected. 
+
+
+Ex:
+    string name = "name";
+    string email = "name@email.com";
+    std::vector<std::string> watchedMovies;
+    watchedMovies.push_back("ID22936");
+    watchedMovies.push_back("ID22937");
+    watchedMovies.push_back("ID22938");
+
+
+    User* testUser = new User(name, email, watchedMovies);
+    
+    cout << testUser->get_full_name() << endl;
+    cout << testUser->get_email() << endl;
+    cout << testUser->get_watch_history()[0] << endl;
+    cout << testUser->get_watch_history()[1] << endl;
+    cout << testUser->get_watch_history()[2] << endl;
+
+
+Movie Class:
+To test the Movie class, I created Movies with the correct input and made sure all of the accessor function behaved as expected.
+
+
+Ex:
+
+
+    string id = "id";
+    string title = "title";
+    string releaseyear = "2020";
+    float rating = 2.5;
+    
+    std::vector<std::string> directors;
+    std::vector<std::string> actors;
+    std::vector<std::string> genres;
+    directors.push_back("steve");
+    actors.push_back("alex");
+    actors.push_back("robby");
+    genres.push_back("comedy");
+
+
+    Movie* testMovie = new Movie(id, title, releaseyear,directors,actors,genres,rating);
+    
+    cout << testMovie->get_id() << endl;
+    cout << testMovie->get_title() << endl;
+    cout << testMovie->get_release_year() << endl;
+    cout << testMovie->get_rating() << endl;
+    cout << testMovie->get_directors()[0] << endl;
+    cout << testMovie->get_actors()[0] << endl;
+    cout << testMovie->get_actors()[1] << endl;
+    cout << testMovie->get_genres()[0] << endl;
+TreeMultimap Class:
+I tested the treemultimap by inserting and finding objects in a tree multimap and making sure they were inserted twice etc. Also making sure that the code runs in O(logn) time
+
+
+ TreeMultimap<std::string, int> tmm;
+     tmm.insert("name", 5);
+     tmm.insert("name", 5);
+     tmm.insert("name", 6);
+     tmm.insert("name", 7);
+     tmm.insert("roger", 7);
+     tmm.insert("roger", 425);
+    tmm.insert("loser", 0);
+     TreeMultimap<std::string,int>::Iterator it = tmm.find("name");
+     // prints 5, 6, and 7 in some order
+     while (it.is_valid()) {
+     std::cout << it.get_value() << std::endl;
+     it.advance();
+     }
+    TreeMultimap<std::string,int>::Iterator it2 = tmm.find("winner");
+    if (!it2.is_valid()){
+     std::cout << "winner is not in the multimap!\n";
+    }
+
+
+
+
+
+
+User Database Class:
+I tested the UserDatabase by loading it and then trying to access elements of the database from it using the get_user_from_email function to make sure that all of the functions are working.
+
+
+UserDatabase udb;
+
+
+   if (!udb.load(USER_DATAFILE))
+{
+        cout << "Failed to load user data file " << USER_DATAFILE << "!" << endl;
+        return 1;
+}
+    
+    User* Fow = udb.get_user_from_email("AbFow2483@charter.net");
+    cout << Fow->get_full_name() << endl;
+    cout << Fow->get_email() << endl;
+    cout << Fow->get_watch_history()[0] << endl;
+    cout << Fow->get_watch_history()[1] << endl;
+
+
+Movie Database Class:
+I tested the Movie Database by loading it then trying to access various element first using the the getMovieFromID then the other treemultimaps such as getAllMoviesWithDirector
+if (!mdb.load(MOVIE_DATAFILE))  // In skeleton, load always return false
+    {
+        cout << "Failed to load user data file " << MOVIE_DATAFILE << "!" << endl;
+        return 1;
+    }
+    Movie* movie = mdb.get_movie_from_id("ID10782");
+    cout << movie->get_title() << endl;
+    
+    vector<Movie*> num = mdb.get_movies_with_actor("Mila Kunis");
+    for(int k = 0; k < num.size(); k++){
+        cout << num[k]->get_title()<< endl;}
+        
+    
+    vector<Movie*> num2 = mdb.get_movies_with_director("Steven Spielberg");
+    for(int k = 0; k < num2.size(); k++){
+        cout << num2[k]->get_title()<< endl;}
+ 
+    
+    vector<Movie*> num3 = mdb.get_movies_with_genre("Horror");
+    for(int k = 0; k < num3.size(); k++){
+        cout << num3[k]->get_title()<< endl;}
+
+
+Recommender Class:
+For the recommender I tested it by slightly altering the function given and calling the recommender function with it and seeing if the output was as expected
+
+
+
+
+void findMatches(const Recommender& r, const MovieDatabase& md, const string& user_email, int num_recommendations) {
+    vector<MovieAndRank> recommendations = r.recommend_movies(user_email, num_recommendations);
+    if (recommendations.empty())
+        cout << "We found no movies to recommend :(.\n";
+    else {
+        for (int i = 0; i < recommendations.size(); i++) {
+            const MovieAndRank& mr = recommendations[i];
+            Movie* m = md.get_movie_from_id(mr.movie_id);
+            cout << i + 1 << ". " << m->get_title() << " ("
+            << m->get_release_year() << ")\n Rating: "
+            << m->get_rating() << "\n Compatibility Score: "
+            << mr.compatibility_score << "\n";
+        }
+    }
+}
+
+
+Int main{
+UserDatabase udb;
+    
+if (!udb.load(USER_DATAFILE))
+{
+        cout << "Failed to load user data file " << USER_DATAFILE << "!" << endl;
+        return 1;
+}
+  
+  
+    MovieDatabase mdb;
+    
+    if (!mdb.load(MOVIE_DATAFILE))  // In skeleton, load always return false
+    {
+        cout << "Failed to load user data file " << MOVIE_DATAFILE << "!" << endl;
+        return 1;
+    }
+
+
+
+
+Recommender r = Recommender(udb, mdb);
+findMatches(r, mdb, "sappho@poetry.org", 10);
+
+
+
+
+}
+
+
+
+
+
+
+
+
+Output:
+1. Pearl Harbor (2001)
+ Rating: 2.85315
+ Compatibility Score: 362
+2. Won Ton Ton: The Dog Who Saved Hollywood (1976)
+ Rating: 2.07143
+ Compatibility Score: 351
+3. The Player (1992)
+ Rating: 3.92309
+ Compatibility Score: 319
+4. Ted (2012)
+ Rating: 3.13185
+ Compatibility Score: 318
+5. A Million Ways to Die in the West (2014)
+ Rating: 3.0031
+ Compatibility Score: 314
+6. Osmosis Jones (2001)
+ Rating: 2.86602
+ Compatibility Score: 304
+7. The Front Page (1931)
+ Rating: 3.54867
+ Compatibility Score: 303
+8. Public Enemies (2009)
+ Rating: 3.29605
+ Compatibility Score: 291
+9. Love Actually (2003)
+ Rating: 3.7188
+ Compatibility Score: 273
+10. It's a Mad, Mad, Mad, Mad World (1963)
+ Rating: 3.52024
+ Compatibility Score: 273
