@@ -1,0 +1,20 @@
+﻿1)
+All of Bank Square’s interactions flowed through its parent class’ doSomething function. I had a function within my Player class which was able to determine whether or not the player had landed or moved upon a certain X/Y coordinate. I used my getPlayer() function(stored in my getWorld pointer) within the square’s doSomething and then called the landedOn() function first to determine if the player had landed on a certain X/Y coordinate. If they had landed on the Square’s X/Y coordinate, the Square performed a landedOnAction() function which is pure virtual under the Square class and redefined by all of its subclasses. In the case of the bank Square, the landedOnAction() function specified that the player should add all of the coins in the bank to their current balance and then set the bank balance to 0. I then checked, using the same method as I did for land, if the player movedOn() the Square currently using its parent class’ doSomething method. If the player moved upon those certain X/Y coordinates, then the square performed a movedOnAction() which is also pure virtual and redefined by all of squares sub classes. In the case of the bank square it takes 5 coins or however many coins the player has and stores that amount in the bank. This is how I was able to handle the bank square specifically, and all squares using the base class’ doSomething function and redefining movedOnAction() and landedOnAction() for all of its subclasses.
+
+
+TLDR: The colocation of the avatar and the square occurs by the square passing in its XY coordinates in to a landOrMovingOn(int x, int y) function defined within the MovingAvatar class (player’s parent class).
+
+
+
+
+2)
+I was able to complete all functionality.
+
+
+
+
+3)
+It was unclear whether or not when two players are teleported(swapped) by the event square, if the player who initially landed on the event square and is then teleported away, is supposed to activate the new square it ends up on. I assumed that it should activate the square and act as if it had landed on it.
+
+
+It was unclear whether or not after teleporting a character lands on the square it is teleported to so I assumed that it should act as though it had landed on the square it is teleported to.
